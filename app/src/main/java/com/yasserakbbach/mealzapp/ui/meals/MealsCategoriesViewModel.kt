@@ -9,5 +9,5 @@ class MealsCategoriesViewModel(
 ) : ViewModel() {
 
     fun getMeals(): List<Meal> =
-        mealsRepository.getMeals().categories
+        mealsRepository.getMeals()?.categories.orEmpty()
 }

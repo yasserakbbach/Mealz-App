@@ -1,8 +1,13 @@
 package com.yasserakbbach.mealzapp.model
 
+import com.yasserakbbach.mealzapp.model.api.MealsService
 import com.yasserakbbach.mealzapp.model.response.MealsList
 
-class MealsRepository {
+class MealsRepository(
+    private val mealsService: MealsService = MealsService()
+) {
 
-    fun getMeals(): MealsList = MealsList(listOf())
+    fun getMeals(): MealsList? {
+        return mealsService.getMeals().execute().body()
+    }
 }
