@@ -27,7 +27,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MealsCategoriesScreen() {
     val viewModel: MealsCategoriesViewModel = viewModel()
-    Text(text = "Hello Mealz App!")
+    viewModel.getMeals()
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items(viewModel.meals.value.orEmpty()) {
+            Text(
+                text = it.name
+            )
+        }
+    }
+
 }
 
 @Preview(showBackground = true)
