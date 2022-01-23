@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -54,7 +55,7 @@ fun MealsCategoriesScreen() {
 
 @Composable
 fun Meal(
-    meal: Meal? = null
+    meal: Meal
 ) {
     Card(
         elevation = 4.dp,
@@ -62,20 +63,42 @@ fun Meal(
             width = 1.dp,
             color = Color.LightGray
         ),
-        modifier = Modifier.padding(horizontal = 12.dp).fillMaxWidth()
+        modifier = Modifier
+            .padding(
+                start = 12.dp, end = 12.dp, top = 12.dp
+            )
+            .fillMaxWidth()
     ) {
-        Column {
 
-            Image(
-                painter = rememberImagePainter(meal!!.imageUrl),
-                contentDescription = null,
-                modifier = Modifier.size(128.dp)
+        Row(
+            modifier = Modifier.height(IntrinsicSize.Min)
+        ) {
+            Column {
+
+                Image(
+                    painter = rememberImagePainter(meal.imageUrl),
+                    contentDescription = null,
+                    modifier = Modifier.size(128.dp)
+                )
+                Text(
+                    text = meal.name,
+                    style = MaterialTheme.typography.body2,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+            Divider(
+                thickness = 1.dp,
+                color = Color.LightGray,
+                modifier = Modifier.fillMaxHeight().width(1.dp)
             )
             Text(
-                text = meal.name,
-                style = MaterialTheme.typography.body2
+                text = meal.description,
+                maxLines = 3,
+                modifier = Modifier.padding(start = 8.dp)
             )
         }
+
+
     }
 }
 
