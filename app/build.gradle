@@ -62,8 +62,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.activity:activity-compose:1.4.0"
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
-    implementation "androidx.activity:activity-compose:1.4.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_verson"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_verson"
 }

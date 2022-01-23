@@ -1,4 +1,4 @@
-package com.yasserakbbach.mealzapp
+package com.yasserakbbach.mealzapp.ui.meals
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yasserakbbach.mealzapp.ui.theme.MealzAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MealsCategoriesScreen() {
+    val viewModel: MealsCategoriesViewModel = viewModel()
     Text(text = "Hello Mealz App!")
 }
 
