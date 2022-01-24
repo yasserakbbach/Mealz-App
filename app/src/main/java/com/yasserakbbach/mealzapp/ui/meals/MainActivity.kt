@@ -13,8 +13,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import com.yasserakbbach.mealzapp.model.response.Meal
-import com.yasserakbbach.mealzapp.model.response.MealsList
 import com.yasserakbbach.mealzapp.ui.theme.MealzAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,10 +36,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MealsCategoriesScreen() {
     val viewModel: MealsCategoriesViewModel = viewModel()
-    var meals: List<Meal> by remember { mutableStateOf(emptyList()) }
-    viewModel.getMeals {
-        meals = it?.categories.orEmpty()
-    }
+    val meals = viewModel.meals.value
+
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -89,7 +84,9 @@ fun Meal(
             Divider(
                 thickness = 1.dp,
                 color = Color.LightGray,
-                modifier = Modifier.fillMaxHeight().width(1.dp)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
             )
             Text(
                 text = meal.description,
