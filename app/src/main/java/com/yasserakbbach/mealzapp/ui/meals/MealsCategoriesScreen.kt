@@ -1,13 +1,11 @@
 package com.yasserakbbach.mealzapp.ui.meals
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -22,24 +20,14 @@ import coil.compose.rememberImagePainter
 import com.yasserakbbach.mealzapp.model.response.Meal
 import com.yasserakbbach.mealzapp.ui.theme.MealzAppTheme
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            MealzAppTheme {
-                MealsCategoriesScreen()
-            }
-        }
-    }
-}
-
 @Composable
 fun MealsCategoriesScreen() {
     val viewModel: MealsCategoriesViewModel = viewModel()
     val meals = viewModel.meals.value
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(12.dp)
     ) {
         items(meals) {
             Meal(it)
@@ -53,6 +41,7 @@ fun Meal(
     meal: Meal
 ) {
     Card(
+        shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
         border = BorderStroke(
             width = 1.dp,
@@ -60,7 +49,7 @@ fun Meal(
         ),
         modifier = Modifier
             .padding(
-                start = 12.dp, end = 12.dp, top = 12.dp
+                top = 12.dp
             )
             .fillMaxWidth()
     ) {
