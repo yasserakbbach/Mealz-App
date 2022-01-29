@@ -7,11 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -36,16 +34,32 @@ fun MealsCategoriesScreen(
 ) {
     val viewModel: MealsCategoriesViewModel = viewModel()
     val meals = viewModel.meals.value
+    val scrollState = rememberLazyListState()
+    val offset = (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex)
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(12.dp)
-    ) {
-        items(meals) {
-            Meal(it) {
-                navController.navigate(
-                    Routes.MEAL_DETAILS_FORMATTED_ROUTE.format(it.id)
-                )
+    Column {
+        CompositionLocalProvider(
+            LocalContentAlpha provides (offset - 1).coerceAtLeast(0f).coerceAtMost(1f)
+        ) {
+            Text(
+                text = "List Meals",
+                style = MaterialTheme.typography.h5,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(12.dp),
+            state = scrollState
+        ) {
+            items(meals) {
+                Meal(it) {
+                    navController.navigate(
+                        Routes.MEAL_DETAILS_FORMATTED_ROUTE.format(it.id)
+                    )
+                }
             }
         }
     }
@@ -75,14 +89,17 @@ fun Meal(
             modifier = Modifier.animateContentSize()
         ) {
             Row(
-                modifier = Modifier.height(IntrinsicSize.Min).fillMaxWidth(),
+                modifier = Modifier
+                    .height(IntrinsicSize.Min)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Image(
                     painter = rememberImagePainter(meal.imageUrl),
                     contentDescription = null,
-                    modifier = Modifier.size(128.dp)
+                    modifier = Modifier
+                        .size(128.dp)
                         .clickable { onClick() }
                 )
                 Text(
@@ -94,10 +111,11 @@ fun Meal(
                 Icon(
                     imageVector = if(isDescriptionVisible) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                     contentDescription = "toggle description",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier
+                        .size(30.dp)
                         .clickable { isDescriptionVisible = !isDescriptionVisible }
                         .align(
-                            if(isDescriptionVisible) Alignment.Bottom else Alignment.CenterVertically
+                            if (isDescriptionVisible) Alignment.Bottom else Alignment.CenterVertically
                         )
                 )
             }
