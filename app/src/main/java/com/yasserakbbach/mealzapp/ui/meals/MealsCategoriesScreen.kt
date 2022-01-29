@@ -48,6 +48,11 @@ fun MealsCategoriesScreen(
                 modifier = Modifier.fillMaxWidth()
             )
         }
+        if(viewModel.isLoading.value) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
