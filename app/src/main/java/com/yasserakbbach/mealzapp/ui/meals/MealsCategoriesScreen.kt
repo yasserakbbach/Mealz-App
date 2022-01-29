@@ -1,18 +1,27 @@
 package com.yasserakbbach.mealzapp.ui.meals
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,13 +42,13 @@ fun MealsCategoriesScreen() {
             Meal(it)
         }
     }
-
 }
 
 @Composable
 fun Meal(
     meal: Meal
 ) {
+    var isDescriptionVisible by remember { mutableStateOf(false)}
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 4.dp,
@@ -54,11 +63,14 @@ fun Meal(
             .fillMaxWidth()
     ) {
 
-        Row(
-            modifier = Modifier.height(IntrinsicSize.Min)
+        Column(
+            modifier = Modifier.animateContentSize()
         ) {
-            Column {
-
+            Row(
+                modifier = Modifier.height(IntrinsicSize.Min).fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
                 Image(
                     painter = rememberImagePainter(meal.imageUrl),
                     contentDescription = null,
@@ -66,25 +78,31 @@ fun Meal(
                 )
                 Text(
                     text = meal.name,
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.padding(8.dp)
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier.padding(8.dp),
+                    textAlign = TextAlign.Start
+                )
+                Icon(
+                    imageVector = if(isDescriptionVisible) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                    contentDescription = "toggle description",
+                    modifier = Modifier.size(30.dp)
+                        .clickable { isDescriptionVisible = !isDescriptionVisible }
+                        .align(
+                            if(isDescriptionVisible) Alignment.Bottom else Alignment.CenterVertically
+                        )
                 )
             }
-            Divider(
-                thickness = 1.dp,
-                color = Color.LightGray,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-            Text(
-                text = meal.description,
-                maxLines = 3,
-                modifier = Modifier.padding(start = 8.dp)
-            )
+            if(isDescriptionVisible) {
+                Text(
+                    text = meal.description,
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.body2,
+                    textAlign = TextAlign.Start,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 3
+                )
+            }
         }
-
-
     }
 }
 
