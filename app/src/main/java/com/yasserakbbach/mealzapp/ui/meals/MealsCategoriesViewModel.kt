@@ -22,4 +22,7 @@ class MealsCategoriesViewModel(
     }
 
     suspend fun getMeals(): List<Meal> = mealsRepository.getMeals().categories
+
+    fun findMealById(mealId: String): Meal? =
+        meals.value.find { it.id == mealId }
 }

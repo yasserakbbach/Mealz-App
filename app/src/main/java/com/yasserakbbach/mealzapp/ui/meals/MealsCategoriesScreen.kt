@@ -13,7 +13,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -25,12 +24,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.yasserakbbach.mealzapp.model.response.Meal
 import com.yasserakbbach.mealzapp.ui.theme.MealzAppTheme
+import com.yasserakbbach.mealzapp.utils.Routes
 
 @Composable
-fun MealsCategoriesScreen() {
+fun MealsCategoriesScreen(
+    navController: NavController
+) {
     val viewModel: MealsCategoriesViewModel = viewModel()
     val meals = viewModel.meals.value
 
@@ -39,14 +42,19 @@ fun MealsCategoriesScreen() {
         contentPadding = PaddingValues(12.dp)
     ) {
         items(meals) {
-            Meal(it)
+            Meal(it) {
+                navController.navigate(
+                    Routes.MEAL_DETAILS_FORMATTED_ROUTE.format(it.id)
+                )
+            }
         }
     }
 }
 
 @Composable
 fun Meal(
-    meal: Meal
+    meal: Meal,
+    onClick: () -> Unit
 ) {
     var isDescriptionVisible by remember { mutableStateOf(false)}
     Card(
@@ -75,6 +83,7 @@ fun Meal(
                     painter = rememberImagePainter(meal.imageUrl),
                     contentDescription = null,
                     modifier = Modifier.size(128.dp)
+                        .clickable { onClick() }
                 )
                 Text(
                     text = meal.name,
